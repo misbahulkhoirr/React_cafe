@@ -7,6 +7,7 @@ import Hasil from './component/Hasil';
 import Menus from './component/Menus';
 import {API_URL} from './Api/constants';
 import axios from 'axios'
+import swal from 'sweetalert'
 
 
 export default class App extends Component {
@@ -15,7 +16,8 @@ export default class App extends Component {
   
     this.state = {
        menus:[],
-       pilihKategori:"Makanan"
+       pilihKategori:"Makanan",
+       chart:[]
     }
   }
 
@@ -25,6 +27,15 @@ export default class App extends Component {
       .then(res => {
         const menus = res.data;
         this.setState({ menus });
+      })
+      .catch(error=>{
+        console.log('Api ERORR',error);
+      })
+
+      axios.get(API_URL+`chart`) // 
+      .then(res => {
+        const chart = res.data;
+        this.setState({ chart });
       })
       .catch(error=>{
         console.log('Api ERORR',error);
@@ -46,9 +57,66 @@ export default class App extends Component {
         console.log('Api ERORR',error);
       })
   }
+
+  masukChart = (value)=>{
+    axios.
+      get(API_URL+"chart?produk.id="+value.id)
+      .then(res => {
+        if(res.data.length === 0){
+        const chart = {
+          jumlah: 1,
+          total_harga:value.harga,
+          product: value
+        }
+
+        axios.
+        post(API_URL+`chart`,chart)
+        .then(res => {
+          swal({
+            title: "Sukses!",
+            text: "You clicked the button!"+chart.product.nama,
+            icon: "success",
+            button: false,
+            timer:1500
+          });
+        })
+        .catch(error=>{
+          console.log('Api ERORR',error);
+        })
+
+       }
+       else{
+        const chart = {
+          jumlah: res.data[0].jumlah+1,
+          total_harga:res.data[0].total_harga+value.harga,
+          product: value
+        }
+
+        axios.put(API_URL+`chart/`+res.data[0].id, chart)
+        .then(res => {
+          swal({
+            title: "Sukses!",
+            text: "You clicked the button!"+chart.product.nama,
+            icon: "success",
+            button: false,
+            timer:1500
+          });
+        })
+        .catch(error=>{
+          console.log('Api ERORR',error);
+        })
+
+       }
+
+      })
+      .catch(error=>{
+        console.log('Api ERORR',error);
+      })
+  }
+
   render() {
     // console.log(this.state.menus);
-    const {menus, pilihKategori} = this.state;
+    const {menus, pilihKategori, chart} = this.state;
     return (
       <div className="App">
       <NavbarElement />
@@ -65,13 +133,14 @@ export default class App extends Component {
                 <Menus 
                 key={menu.id}
                 menu={menu}
+                masukChart={this.masukChart}
                 />
               ))
             }
               </Row>
             </Col>
 
-            <Hasil />
+            <Hasil chart={chart}/>
           </Row>
         </Container>
     </div>
