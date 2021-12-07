@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Col, Row, ListGroup, Badge} from 'react-bootstrap'
 import { numberFormat } from '../Api/numberFormat';
+import TotalBayar from './TotalBayar';
 
 export default class Hasil extends Component {
     render() {
@@ -37,6 +38,8 @@ export default class Hasil extends Component {
                         ))}
                     </ListGroup>
                 )}
+
+                <TotalBayar char={chart}/>
                 
             </Col>
         )
