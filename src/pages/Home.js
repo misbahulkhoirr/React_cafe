@@ -29,7 +29,31 @@ export default class Home extends Component {
         console.log('Api ERORR',error);
       })
 
-      axios.get(API_URL+`chart`) // 
+      // axios.get(API_URL+`chart`) // 
+      // .then(res => {
+      //   const chart = res.data;
+      //   this.setState({ chart });
+      // })
+      // .catch(error=>{
+      //   console.log('Api ERORR',error);
+      // })
+      this.getListChart();
+  }
+  
+  // componentDidUpdate(prevState){
+  //   if(this.state.chart !== prevState.chart)
+  //   axios.get(API_URL+`chart`) // 
+  //   .then(res => {
+  //     const chart = res.data;
+  //     this.setState({ chart });
+  //   })
+  //   .catch(error=>{
+  //     console.log('Api ERORR',error);
+  //   })
+  // }
+
+  getListChart=()=>{
+    axios.get(API_URL+`chart`) // 
       .then(res => {
         const chart = res.data;
         this.setState({ chart });
@@ -37,18 +61,6 @@ export default class Home extends Component {
       .catch(error=>{
         console.log('Api ERORR',error);
       })
-  }
-  
-  componentDidUpdate(prevState){
-    if(this.state.chart !== prevState.chart)
-    axios.get(API_URL+`chart`) // 
-    .then(res => {
-      const chart = res.data;
-      this.setState({ chart });
-    })
-    .catch(error=>{
-      console.log('Api ERORR',error);
-    })
   }
 
   // untuk mengaktivkan list kategori saat di klik
@@ -81,6 +93,7 @@ export default class Home extends Component {
         axios
         .post(API_URL+`chart`,chart)
         .then(res => {
+          this.getListChart();
           swal({
             title: "Sukses!",
             text: "You clicked the button!"+chart.product.nama,
@@ -149,7 +162,7 @@ export default class Home extends Component {
               </Row>
             </Col>
 
-            <Hasil chart={chart}/>
+            <Hasil chart={chart}{...this.props}/>
           </Row>
         </Container>
 

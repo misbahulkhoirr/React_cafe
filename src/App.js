@@ -12,7 +12,7 @@ export default class App extends Component {
     return (
       <BrowserRouter>
       <NavbarElement />
-      <main>
+      <main className="mb-5">
       <Routes>
           <Route exact path="/" element={<Home />}></Route>
           <Route exact path="/sukses" element={<Sukses />}></Route>

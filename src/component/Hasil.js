@@ -7,15 +7,15 @@ export default class Hasil extends Component {
     render() {
         const {chart}= this.props
         return (
-            <Col md={3} mt="2">
-                <h4>Hasil</h4>
+            <Col md={3} mt="4">
+                <h4>Pesanan</h4>
                 <hr />
                 {
                     chart.length !==0 &&(
                     <ListGroup variant="flush">
                         {
-                        chart.map((items)=>(
-                            <ListGroup.Item>
+                        chart.map((items, index)=>(
+                            <ListGroup.Item key={index}>
                                 <Row>
                                     <Col xs={2}>
                                     <h5>
@@ -39,7 +39,7 @@ export default class Hasil extends Component {
                     </ListGroup>
                 )}
 
-                <TotalBayar char={chart}/>
+                <TotalBayar chart={chart}{...this.props}/>
                 
             </Col>
         )

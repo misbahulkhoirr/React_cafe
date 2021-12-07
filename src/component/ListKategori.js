@@ -40,7 +40,7 @@ export default class ListKategori extends Component {
             <Col md={2} mt="2">
                 <h4>List Kategori</h4>
                 <hr />
-                    <ListGroup>
+                    <ListGroup className="mt-4">
                     {
                     kategoris&&kategoris.map((kategori)=>(
                         <ListGroup.Item key={kategori.id} onClick={()=>changeKategori(kategori.nama)} className={ pilihKategori === kategori.nama && "kategoriAktiv" } style={{cursor:"pointer"}}>
